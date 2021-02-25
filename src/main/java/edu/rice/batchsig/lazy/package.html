@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Lazy verification</h1>
+
+<h2>Overview</h2>
+<p> Lazy verifiers only verify outstanding messages when idle, or when forced(). Lazy verifiers implement the VerifyLazily interface. There are two implementations, VerifyMerkleLazily and VerifyHisttreeLazily that lazily verify Merkle and spliced signatures respectively.
+
+<p> Messages must be submitted before being forced. forceUser(Object) forces all objects who report the user given.
+
+<p> Just as before, messages to be verified must satisfy interface IMessage.</p>
+
+</body>
+</html>

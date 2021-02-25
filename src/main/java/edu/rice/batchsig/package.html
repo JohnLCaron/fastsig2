@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<h1>Batch signature code</h1>
+
+<h2>Overview</h2>
+<p>This code layers on top of the history tree and
+Merkle tree libraries in edu.rice.historytree and offers an asynchronous
+queu interface for checking and verifying signatures.
+
+<p>The main classes
+for signing messages are: HistoryQueue, MerkleQueue, and SimpleQueue. These clases sign submitted messages with Spliced signatures, Merkle signatures and Simple signatures respectively.
+They are interchangable and support the ProcessQueue interface, where messages can be
+submitted for signing. Messages to be signed must implement the OMessage interface. 
+
+<p>The main class for verifying messages is VerifyQueue, where messages
+are submitted for verification. This code is only somewhat lazy, in that
+all outstanding messages are verified instantly upon a call to
+process(). It handles all types of signature, dispatching the verification duties to 3 helper classes.
+VerifyHistTreeGroup/VerifyHisttreeSingle, VerifyMerkle, and
+VerifySimple. Messages to be verified must support the IMessage interface.
+
+<p> All public key signature operations are done through an opaque interface SignaturePrimitives.
+
+
+</body>
+</html>

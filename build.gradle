@@ -1,0 +1,106 @@
+// The "buildscript" configuration section is for gradle itself
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.14'
+    }
+}
+
+// What is "plugin"? They are just java classes, which implement Plugin interface.
+plugins {
+    id 'java'
+    id "com.google.protobuf" version "0.8.14"
+}
+
+group 'com.sunya.fastsig2'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext.junitPlatformVersion = '1.7.0'
+ext.junitJupiterVersion = '5.7.0'
+ext.jqwikVersion = '1.3.10'
+
+compileTestJava {
+    // To enable argument names in reporting and debugging
+    options.compilerArgs += '-parameters'
+}
+
+dependencies {
+    implementation 'it.unimi.dsi:fastutil:8.5.2'
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2' // LOOK All we want is Nullable
+    implementation 'com.google.guava:guava:30.1-jre'
+    implementation 'com.google.protobuf:protobuf-java:3.14.0'
+    implementation "com.google.auto.value:auto-value-annotations:1.7.4"
+    implementation 'com.google.flogger:flogger:0.5.1'
+    runtimeOnly 'com.google.flogger:flogger-system-backend:0.5.1'
+
+    annotationProcessor "com.google.auto.value:auto-value:1.7.4"
+
+    testImplementation 'com.google.truth:truth:1.1'
+    testImplementation 'com.google.truth.extensions:truth-java8-extension:1.1'
+    testImplementation "net.jqwik:jqwik:${jqwikVersion}" // aggregate jqwik dependency
+    // Add if you also want to use the Jupiter engine or Assertions from it
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.0"
+}
+
+protobuf {
+    protoc {
+        // The artifact spec for the Protobuf Compiler
+        artifact = 'com.google.protobuf:protoc:3.14.0'
+    }
+}
+
+// Add generated sources to the main sourceSet, which keeps intellij happy.
+sourceSets.main.java.srcDirs += ['build/generated/source/proto/main/java']
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'jqwik'
+
+        // Or include several Junit engines if you use them
+        // includeEngines 'jqwik', 'junit-jupiter', 'junit-vintage'
+
+        // includeTags 'fast', 'medium'
+        // excludeTags 'slow'
+    }
+
+    include '**/*Properties.class'
+    include '**/*Test.class'
+    include '**/*Tests.class'
+    include '**/Test*.class'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.sunya.electionguard.verifier.VerifyElectionRecord'
+    }
+    archiveClassifier = "all"
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+task myJavadocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+    exclude 'com/sunya/electionguard/viz/*.java'
+
+    classpath = sourceSets.main.runtimeClasspath
+    title ='test'
+    options.showFromPublic()
+    options.noDeprecated()
+}
+

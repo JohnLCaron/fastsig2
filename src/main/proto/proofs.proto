@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+option java_outer_classname = "Serialization";
+option java_package = "edu.rice.historytree.generated";
+
+// A configuration message for an aggregator. An aggobj generates a config blob, which 
+// is placed in this message along with its name.
+
+/*
+message AggConfig {
+  string name = 1;
+  bytes configblob =2;
+ }
+
+message Config {
+  AggConfig aggconfig = 1;
+  string valtype = 2;
+}
+*/
+
+
+// For serializing a pruned tree. 
+message HistNode {
+  HistNode left = 1;
+  HistNode right = 2;
+
+  // Leaves must include either a value or an agg.
+  // Interior non-frozen never include a value or agg.
+  // Interior non-stubs never include a value or an agg.
+  // Interior frozen stubs include an agg.
+  bytes val = 3;
+  bytes agg = 4;
+}
+
+message PrunedTree {
+  int32 version = 1; // Optional for merkle tree, required for the history tree
+  HistNode root = 2; // Root node.
+}
+
+
+/* What is the type of the tree in the signature?
+   Its either Merkle or History.
+*/
+enum SigTreeType {
+  UNKNOWN = 0;
+  MESSAGE = 1;
+  HISTORY_TREE = 2;
+  MERKLE_TREE = 3;
+};
+
+/* What is the type of proof blob that we have? At present, a merkle tree, history tree (containing a proof of ONE blob), or a single message.
+*/
+
+enum SignatureType {
+  UNKNOWN_MESSAGE = 0;
+  SINGLE_MESSAGE = 1;
+  SINGLE_HISTORY_TREE = 2;
+  SINGLE_MERKLE_TREE = 3;
+};
+
+
+// What is signed. (but is not sent)
+message TreeSigMessage {
+  SigTreeType treetype = 1;
+  int32 version = 3;
+  bytes roothash = 4;  // Or datahash
+}
+
+// What is sent.
+message TreeSigBlob {
+  // Overall type of this signature.
+  SignatureType signature_type = 5;
+
+  // Borrowed from ProtocolSignature (google wave) for the low-level signature.
+  // Indicate how the 'TreeSigMessage' is signed.
+  enum SignatureAlgorithm {
+    UNKNOWN = 0; // default
+    TEST_DIGEST = 2;
+    SHA1_RSA = 3;
+    SHA1_DSA = 4;
+    SHA256_RSA = 5;
+    SHA256_DSA = 6;
+  }
+
+  bytes signature_bytes = 1;
+  bytes signer_id = 2;
+  SignatureAlgorithm signature_algorithm = 3;
+
+  // Stuff set by bundled signatures.
+
+  PrunedTree tree = 6;
+  int32 leaf = 4; //Point out specific leafs.
+
+  // For a history tree, used to demultiplex
+  sfixed64 tree_id = 16;
+  repeated int32 splice_hint = 17;
+}
+
+// Denotes a message data being signed.
+message MessageData {
+  // What is the timestamp on this message?
+  int64 timestamp = 1;
+  // WHich users just started buffering (IE, don't authenticate?)
+  repeated int32 start_buffering_users = 2;
+  // WHich users just ended buffering (IE, authenticate em all NOW!!)
+  repeated int32 end_buffering_users = 3;
+  // Actual contents of the message. (The signature comes next *IF* this field exists
+  bytes message = 4;
+  int32 recipient_user = 5;
+}
+
+
+
+////////////////
+////////////////   Stream signature design.
+////////////////
+
+/*
+message StreamBundle {
+   repeated int32 splicepoints=2; // Includes the end of the last epoch.
+   Commitment commitment=3;
+   bytes signature = 4;
+}
+
+// Represents a signature over a single version.
+message SigBlob {
+   repeated int32 messageversion = 1;
+   Commitment commitment = 2;
+}
+*/
