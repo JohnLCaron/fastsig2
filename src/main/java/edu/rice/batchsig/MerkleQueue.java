@@ -37,8 +37,9 @@ import edu.rice.historytree.generated.Serialization.TreeSigMessage;
 import edu.rice.historytree.storage.ArrayStore;
 import edu.rice.historytree.storage.HashStore;
 
-/** Sign a set of messages by placing them into a history tree.
- * 
+/**
+ * Sign a set of messages by placing them into a history tree.
+ * <p>
  * A new merkle tree is used for each batch.
  */
 public class MerkleQueue extends QueueBase<OMessage> implements SuspendableProcessQueue<OMessage> {

@@ -26,7 +26,7 @@ import com.google.protobuf.ByteString;
 
 public interface AggregationInterface<A, V> {
 	/** Factory for building aggregators, used to register aggregation schema's by name. */
-	public interface Factory<A, V> {
+	interface Factory<A, V> {
 		AggregationInterface<A, V> newInstance();
 		String name();
 	}	

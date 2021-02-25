@@ -30,7 +30,7 @@ public class VerifyHisttreeGroup extends VerifyHisttreeEagerlyBase {
 		 * corresponding messages is stored in splices) If so, then verify the
 		 * splice. If not, or a bad splice check the signature. If a message
 		 * validates via one of these mechanisms, then this message is valid and
-		 * add its splicepoints to splices.
+		 * add its splice points to splices.
 		 */
 
 		/**

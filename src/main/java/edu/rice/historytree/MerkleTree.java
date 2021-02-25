@@ -25,13 +25,10 @@ import edu.rice.historytree.storage.AppendOnlyArrayStore;
 
 /**
  * Top level class for implementing a history tree.
- * 
+ *
+ * @param <A> The type of aggregate value
+ * @param <V> The type of annotation
  * @author crosby
- * 
- * @param <A>
- *            The type of aggregate value
- * @param <V>
- *            The type of annotation
  */
 public class MerkleTree<A, V> extends TreeBase<A, V> {
 	/** Has this Merkle tree been frozen and marked immutable? */

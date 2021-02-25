@@ -31,8 +31,8 @@ import edu.rice.historytree.generated.Serialization.SignatureType;
 import edu.rice.historytree.generated.Serialization.TreeSigBlob;
 import edu.rice.historytree.generated.Serialization.TreeSigMessage;
 
-/** Sign a set of messages by signing them one at a time.
- * 
+/**
+ * Sign a set of messages by signing them one at a time.
  */
 public class SimpleQueue extends QueueBase<OMessage> implements SuspendableProcessQueue<OMessage> {
 	public SimpleQueue(SignaturePrimitives signer) {

@@ -24,8 +24,6 @@ import java.security.NoSuchAlgorithmException;
 
 import edu.rice.historytree.AggregationInterface;
 
-
-
 @SuppressWarnings("rawtypes")
 public class SHA256Agg extends HashAggBase {
 	public MessageDigest getAlgo(byte tag) {

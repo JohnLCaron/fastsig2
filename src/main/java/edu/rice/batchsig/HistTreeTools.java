@@ -12,10 +12,11 @@ import edu.rice.historytree.storage.HashStore;
 
 /** Utility code for the various history tree verifiers, both the eager ones here and the lazy ones. */
 public class HistTreeTools {
-	/** Parse the history tree structure out of an incoming message.
-	 * 
-	 *  @return the parsed history tree.
-	 *  */
+	/**
+	 * Parse the history tree structure out of an incoming message.
+	 *
+	 * @return the parsed history tree.
+	 */
 	public static HistoryTree<byte[], byte[]> parseHistoryTree(IMessage message) {
 		TreeSigBlob sigblob = message.getSignatureBlob();
 		PrunedTree pb = sigblob.getTree();

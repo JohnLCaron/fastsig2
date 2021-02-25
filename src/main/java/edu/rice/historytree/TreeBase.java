@@ -28,12 +28,9 @@ import edu.rice.historytree.generated.Serialization.PrunedTree;
  * Abstract class for storing a history tree, which is a complete tree,
  * resembling a heap. New levels are added on automatically.
  *
+ * @param <A> Type of an aggregate (Hash or string or X)
+ * @param <V> Type of the value being stored.
  * @author crosby
- *
- * @param <A>
- *            Type of an aggregate (Hash or string or X)
- * @param <V>
- *            Type of the value being stored.
  */
 public abstract class TreeBase<A, V> {
   /** The current timestamp; the index of the last inserted event. */

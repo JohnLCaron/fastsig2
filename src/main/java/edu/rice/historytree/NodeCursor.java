@@ -21,39 +21,36 @@ package edu.rice.historytree;
 
 /**
  * A cursor for navigating around a a history tree.
- * 
+ *
  * The domain of a cursor is: { (layer,index) } UNION NULL
- * 
+ *
  * I use cursors to traverse trees stored in external data stores. At each
  * position, an external datastore can either be 'valid' and have data at that
  * location, be 'invalid' and not have data at that location.
- * 
+ *
  * I have a 3-way challenge in designing them and the underlying data store.
- * 
+ *
  * A given Cursor can be either:
- * 
- * None: Used to indicate NULL, eg, no such child. Indicated by NodeFactory ==
- * NULL
- * 
+ *
+ * None: Used to indicate NULL, eg, no such child. Indicated by NodeFactory == NULL
+ *
  * Valid: Pointing to a layer&index containing real data.
- * 
+ *
  * Invalid: Points to a valid location, however that location, if dereferenced,
  * has no valid data, so this node cannot be dereferenced. This is used to
  * denote an omitted node.
- * 
- * 
+ *
+ *
  * At a given slot in the datastore, the aggregate may be:
- * 
- * The domain of things stored in the datastore is None UNION set of all A. 
- * 
+ *
+ * The domain of things stored in the datastore is None UNION set of all A.
+ *
  * We need 'None' to place into a valid, but non-frozen tree node.
- * 
+ *
  * A blob of data.
- * 
- * A leaf should always have a value, unless it has been deliberately stubbed
- * out.
+ *
+ * A leaf should always have a value, unless it has been deliberately stubbed out.
  */
-
 public final class NodeCursor<A, V> {
 	private final HistoryDataStore<A, V> datastore;
 	private final int layer;
